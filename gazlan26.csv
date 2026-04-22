@@ -1,0 +1,81 @@
+Data|Giorn.|Part.|PartTot.|Luogo|Gioco|Giocatore|punti gioco|posiz
+01/02/26|1|1|1|Gaz|Hens|Carlo||3
+01/02/26|1|1|1|Gaz|Hens|Carlotta||2
+01/02/26|1|1|1|Gaz|Hens|Edoardo||3
+01/02/26|1|1|1|Gaz|Hens|Sandra||1
+01/02/26|1|2|2|Gaz|Terraforming Mars|Carlo||3
+01/02/26|1|2|2|Gaz|Terraforming Mars|Carlotta||1
+01/02/26|1|2|2|Gaz|Terraforming Mars|Edoardo||2
+01/02/26|1|2|2|Gaz|Terraforming Mars|Sandra||4
+01/02/26|1|3|3|Gaz|Codex|Carlo||2
+01/02/26|1|3|3|Gaz|Codex|Carlotta||2
+01/02/26|1|3|3|Gaz|Codex|Edoardo||4
+01/02/26|1|3|3|Gaz|Codex|Sandra||1
+01/02/26|1|4|4|Gaz|Codex|Carlo||1
+01/02/26|1|4|4|Gaz|Codex|Carlotta||3
+01/02/26|1|4|4|Gaz|Codex|Edoardo||4
+01/02/26|1|4|4|Gaz|Codex|Sandra||2
+01/02/26|1|5|5|Gaz|Codex|Carlo||1
+01/02/26|1|5|5|Gaz|Codex|Carlotta||4
+01/02/26|1|5|5|Gaz|Codex|Edoardo||2
+01/02/26|1|5|5|Gaz|Codex|Sandra||2
+15/02/26|2|1|6|Lan|Fjords|Carlo|14|2
+15/02/26|2|1|6|Lan|Fjords|Carlotta|9|3
+15/02/26|2|1|6|Lan|Fjords|Edoardo|9|3
+15/02/26|2|1|6|Lan|Fjords|Sandra|17|1
+27/02/26|3|1|7|Gaz|Carson City|Carlo|27|3
+27/02/26|3|1|7|Gaz|Carson City|Carlotta|35|2
+27/02/26|3|1|7|Gaz|Carson City|Edoardo|24|4
+27/02/26|3|1|7|Gaz|Carson City|Sandra|36|1
+27/02/26|3|2|8|Gaz|Le 5 torri|Carlo|31|3
+27/02/26|3|2|8|Gaz|Le 5 torri|Carlotta|23|4
+27/02/26|3|2|8|Gaz|Le 5 torri|Edoardo|52|1
+27/02/26|3|2|8|Gaz|Le 5 torri|Sandra|32|2
+27/02/26|3|3|9|Gaz|Le 5 torri|Carlo|14|4
+27/02/26|3|3|9|Gaz|Le 5 torri|Carlotta|29|3
+27/02/26|3|3|9|Gaz|Le 5 torri|Edoardo|40|2
+27/02/26|3|3|9|Gaz|Le 5 torri|Sandra|62|1
+27/02/26|3|4|10|Gaz|Le 5 torri|Carlo|43|1
+27/02/26|3|4|10|Gaz|Le 5 torri|Carlotta|43|1
+27/02/26|3|4|10|Gaz|Le 5 torri|Edoardo|27|4
+27/02/26|3|4|10|Gaz|Le 5 torri|Sandra|36|3
+04/04/26|4|1|11|Lan|Codex Naturalis|Carlo|37|1
+04/04/26|4|1|11|Lan|Codex Naturalis|Carlotta|28|4
+04/04/26|4|1|11|Lan|Codex Naturalis|Edoardo|31|3
+04/04/26|4|1|11|Lan|Codex Naturalis|Sandra|37|1
+06/04/26|5|1|12|Lan|Loot|Carlo|70|2
+06/04/26|5|1|12|Lan|Loot|Carlotta|65|3
+06/04/26|5|1|12|Lan|Loot|Edoardo|55|4
+06/04/26|5|1|12|Lan|Loot|Sandra|100|1
+06/04/26|5|2|13|Lan|Happy little dinosaur|Carlo||1
+06/04/26|5|2|13|Lan|Happy little dinosaur|Carlotta||2
+06/04/26|5|2|13|Lan|Happy little dinosaur|Edoardo||2
+06/04/26|5|2|13|Lan|Happy little dinosaur|Sandra||4
+06/04/26|5|3|14|Lan|Happy little dinosaur|Carlo||4
+06/04/26|5|3|14|Lan|Happy little dinosaur|Carlotta||4
+06/04/26|5|3|14|Lan|Happy little dinosaur|Edoardo||4
+06/04/26|5|3|14|Lan|Happy little dinosaur|Sandra||1
+06/04/26|5|4|15|Lan|Castelli della Borgogna|Carlo|213|2
+06/04/26|5|4|15|Lan|Castelli della Borgogna|Carlotta|186|4
+06/04/26|5|4|15|Lan|Castelli della Borgogna|Edoardo|211|3
+06/04/26|5|4|15|Lan|Castelli della Borgogna|Sandra|241|1
+06/04/26|6|1|16|Lan|Shifting Stones|Carlo|14|1
+06/04/26|6|1|16|Lan|Shifting Stones|Carlotta|7|4
+06/04/26|6|1|16|Lan|Shifting Stones|Edoardo|12|2
+06/04/26|6|1|16|Lan|Shifting Stones|Sandra|10|3
+06/04/26|6|2|17|Lan|Shifting Stones|Carlo|15|1
+06/04/26|6|2|17|Lan|Shifting Stones|Carlotta|12|4
+06/04/26|6|2|17|Lan|Shifting Stones|Edoardo|13|3
+06/04/26|6|2|17|Lan|Shifting Stones|Sandra|14|2
+06/04/26|6|3|18|Lan|Shifting Stones|Carlo|20|1
+06/04/26|6|3|18|Lan|Shifting Stones|Carlotta|12|4
+06/04/26|6|3|18|Lan|Shifting Stones|Edoardo|17|2
+06/04/26|6|3|18|Lan|Shifting Stones|Sandra|17|2
+12/04/26|7|1|19|Gaz|Colori di Parigi|Carlo|42|2
+12/04/26|7|1|19|Gaz|Colori di Parigi|Carlotta|35|3
+12/04/26|7|1|19|Gaz|Colori di Parigi|Edoardo|18|4
+12/04/26|7|1|19|Gaz|Colori di Parigi|Sandra|46|1
+12/04/26|7|2|20|Gaz|Loot|Carlo|80|3
+12/04/26|7|2|20|Gaz|Loot|Carlotta|65|4
+12/04/26|7|2|20|Gaz|Loot|Edoardo|112|1
+12/04/26|7|2|20|Gaz|Loot|Sandra|104|2
