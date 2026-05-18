@@ -65,7 +65,7 @@ try:
         fig2, ax2 = plt.subplots(figsize=(5, 5))
         ax2.pie(df_somma['vittorie'], labels=df_somma['Giocatore'], 
                 autopct='%1.0f%%', colors=colors, textprops={'fontsize': 10})
-        ax2.set_title('Distribuzione Vittorie', fontsize=14)
+        ax2.set_title('Vittorie', fontsize=14)
         st.pyplot(fig2)
 
     # Bottone extra per aggiornare
