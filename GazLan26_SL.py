@@ -28,7 +28,7 @@ try:
     data_max = df_org['Data'].max()
 
     # --- INTERFACCIA ---
-    # Usiamo HTML a riga singola (senza indentazione) per ridurre la dimensione del titolo e del sottotitolo in modo sicuro
+    # Usiamo HTML a riga singola per ridurre la dimensione del titolo e del sottotitolo in modo sicuro
     st.markdown('<h1 style="font-size: 30px; font-weight: 700; margin-bottom: 5px; padding-bottom: 0px;">🏆 Campionato Ludico GazLan26</h1>', unsafe_allow_html=True)
     st.markdown(f'<p style="font-size: 18px; color: #555; margin-top: 0px; margin-bottom: 25px;">Classifica aggiornata al {data_max.strftime("%d/%m/%Y")}</p>', unsafe_allow_html=True)
 
@@ -58,8 +58,36 @@ try:
         etichetta_estesa = f"{gioco} ({num_partite} {testo_partita})"
         mappa_opzioni[etichetta_estesa] = gioco
 
-    opzione_scelta_estesa = st.selectbox("Seleziona il gioco", options=list(mappa_opzioni.keys()))
+    opzione_scelta_estesa = st.selectbox(
+        "Seleziona il gioco", 
+        options=list(mappa_opzioni.keys())
+    )
     gioco_selezionato = mappa_opzioni[opzione_scelta_estesa]
+
+    # --- DISABILITAZIONE TASTIERA MOBILE ---
+    # Questo trucco JS intercetta i campi di inserimento delle selectbox di Streamlit,
+    # li rende "readonly" e imposta "inputmode=none" in modo da impedire l'apertura della tastiera su Android/iOS.
+    st.components.v1.html(
+        """
+        <script>
+            function prevenzioneTastieraMobile() {
+                const docPadre = window.parent.document;
+                const campiInput = docPadre.querySelectorAll('.stSelectbox input');
+                campiInput.forEach(input => {
+                    if (input && !input.hasAttribute('readonly')) {
+                        input.setAttribute('readonly', 'true');
+                        input.setAttribute('inputmode', 'none');
+                        input.style.cursor = 'pointer';
+                    }
+                });
+            }
+            // Rieseguiamo ogni 500ms per coprire eventuali ricaricamenti di Streamlit
+            setInterval(prevenzioneTastieraMobile, 500);
+        </script>
+        """,
+        height=0,
+        width=0
+    )
 
     # --- FILTRAGGIO DATI ---
     if gioco_selezionato == 'Tutti':
@@ -78,7 +106,7 @@ try:
     # Rinominiamo la colonna "vittorie" con la V maiuscola per l'estetica della tabella
     df_tabella = df_somma.rename(columns={'vittorie': 'Vittorie'})
 
-    # --- TABELLA (Ripristinata con st.dataframe nativo di Streamlit) ---
+    # --- TABELLA (Con allineamento dati e intestazioni di colonna) ---
     st.dataframe(
         df_tabella,
         use_container_width=True,
