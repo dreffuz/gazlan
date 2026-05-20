@@ -100,20 +100,16 @@ try:
         # Grafico a barre (Orizzontale)
         fig, ax = plt.subplots(figsize=(5, 5))
         
-        # Rendiamo trasparenti la figura e l'area di disegno
-        fig.patch.set_facecolor('none')
-        ax.patch.set_facecolor('none')
-        
         ax.barh(df_somma['Giocatore'], df_somma['Punteggio'], color=colors)
         
-        # Etichette del punteggio dentro le barre con font più grande (da 12 a 14)
+        # Etichette del punteggio dentro le barre con font più grande (14)
         for i, v in enumerate(df_somma['Punteggio']):
             ax.text(v * 0.95, i, str(v), color='white', fontweight='bold', 
                     ha='right', va='center', fontsize=14)
                     
         ax.invert_yaxis()
         
-        # Titolo del grafico più grande (da 14 a 18) e in grassetto
+        # Titolo del grafico più grande (18) e in grassetto
         ax.set_title('Punteggio Totale', fontsize=18, fontweight='bold', pad=15)
         
         # Etichette dei giocatori sulla sinistra più grandi (labelsize=14)
@@ -124,16 +120,12 @@ try:
         ax.spines['right'].set_visible(False)
         ax.spines['bottom'].set_visible(False)
         
-        # Mostriamo il grafico forzando la trasparenza nel rendering di Streamlit
-        st.pyplot(fig, transparent=True)
+        # Renderizziamo il grafico con lo sfondo solido predefinito
+        st.pyplot(fig)
 
     with col2:
         # Grafico a torta
         fig2, ax2 = plt.subplots(figsize=(5, 5))
-        
-        # Rendiamo trasparenti la figura e l'area di disegno
-        fig2.patch.set_facecolor('none')
-        ax2.patch.set_facecolor('none')
         
         # Filtriamo df_somma per tenere solo chi ha effettivamente vinto almeno una volta (> 0)
         df_torta = df_somma[df_somma['vittorie'] > 0]
@@ -154,11 +146,11 @@ try:
                      ha='center', va='center', fontsize=16, color='gray')
             ax2.axis('off')
             
-        # Titolo della torta più grande (da 14 a 18) e in grassetto
+        # Titolo della torta più grande (18) e in grassetto
         ax2.set_title('Vittorie', fontsize=18, fontweight='bold', pad=15)
         
-        # Mostriamo il grafico forzando la trasparenza nel rendering di Streamlit
-        st.pyplot(fig2, transparent=True)
+        # Renderizziamo il grafico con lo sfondo solido predefinito
+        st.pyplot(fig2)
 
     # Bottone extra per aggiornare
     if st.button("🔄 Aggiorna Dati"):
@@ -168,4 +160,3 @@ try:
 except Exception as e:
     st.error(f"Errore nel caricamento: {e}")
     st.info("Assicurati che il foglio Google sia condiviso con 'Chiunque abbia il link'.")
-
