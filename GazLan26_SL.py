@@ -2,51 +2,102 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# in Tools -> Open system shell:
+# streamlit run GazLan26_SL.py
+
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(page_title="GazLan26", page_icon="🎲", layout="centered")
 
-# --- LOGICA DATI (Uguale alla tua) ---
-punt = {1:6, 2:4, 3:3, 4:2}
+# --- LOGICA DATI ---
+punt = {1:6, 2:4, 3:2, 4:1}
 SHEET_ID = '1lax0ZUNUFCp5uwxxAlVo98-lw0Eelpv48H7N2MHBd4w'
 SHEET_NAME = 'dat'
 url = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}'
 
-@st.cache_data(ttl=600) # Carica i dati e li tiene in memoria per 10 minuti
-def fetch_data():
+@st.cache_data(ttl=600) # Carica i dati grezzi e li tiene in memoria per 10 minuti
+def fetch_raw_data():
     data = pd.read_csv(url)
     data['Punteggio'] = data['posiz'].map(punt)
     data['vittorie'] = data['posiz'].eq(1).astype(int)
+    data['Data'] = pd.to_datetime(data['Data'], format='%d/%m/%y')
+    return data
+
+try:
+    # 1. Carichiamo i dati grezzi completi
+    df_org = fetch_raw_data()
+    data_max = df_org['Data'].max()
+
+    # --- INTERFACCIA ---
+    st.title("🏆 Campionato Ludico GazLan26")
+    st.subheader(f"Classifica aggiornata al {data_max.strftime('%d/%m/%Y')}")
+
+    # --- DATI RIEPILOGO GENERALE (Sempre riferiti a TUTTI i giochi) ---
+    giornate_gioco = df_org['Data'].nunique()
+    totale_partite = df_org['Progr Partita'].nunique()
+    giochi_diversi = df_org['Gioco'].nunique()
+
+    # Mostriamo i contatori generali affiancati usando i widget metric di Streamlit
+    m1, m2, m3 = st.columns(3)
+    m1.metric(label="Giornate di gioco", value=giornate_gioco)
+    m2.metric(label="Totale partite", value=totale_partite)
+    m3.metric(label="Giochi diversi", value=giochi_diversi)
     
-    somma = data.groupby('Giocatore').agg({
+    st.write("---") # Una linea di separazione prima del filtro e dei grafici
+    # --- FILTRO GIOCO (LISTA A DISCESA CON CONTEGGIO PARTITE) ---
+    
+    # 1. Calcoliamo il totale delle partite generali usando i valori unici di 'Progr Partita'
+    totale_partite_generale = df_org['Progr Partita'].nunique()
+    
+    # 2. Calcoliamo quante partite uniche ci sono per ciascun gioco
+    conteggio_giochi = df_org.groupby('Gioco')['Progr Partita'].nunique().to_dict()
+    
+    # 3. Prepariamo la lista dei giochi ordinata alfabeticamente
+    giochi_unici = sorted(df_org['Gioco'].dropna().unique())
+    
+    # 4. Creiamo il dizionario per mappare il testo della selectbox al valore reale
+    mappa_opzioni = {f"Tutti ({totale_partite_generale} partite)": "Tutti"}
+    
+    for gioco in giochi_unici:
+        num_partite = conteggio_giochi.get(gioco, 0)
+        # Gestiamo il singolare/plurale ("1 partita" vs "2 partite")
+        testo_partita = "partita" if num_partite == 1 else "partite"
+        
+        etichetta_estesa = f"{gioco} ({num_partite} {testo_partita})"
+        mappa_opzioni[etichetta_estesa] = gioco
+
+    # 5. Mostriamo la selectbox con le etichette estese
+    opzione_scelta_estesa = st.selectbox("Seleziona il gioco", options=list(mappa_opzioni.keys()))
+    
+    # 6. Recuperiamo il nome "puro" del gioco per il filtro
+    gioco_selezionato = mappa_opzioni[opzione_scelta_estesa]
+
+    # --- FILTRAGGIO DATI ---
+    if gioco_selezionato == 'Tutti':
+        df_filtrato = df_org
+    else:
+        df_filtrato = df_org[df_org['Gioco'] == gioco_selezionato]
+
+    # 3. Calcoliamo la somma e le vittorie SOLO sui dati filtrati
+    df_somma = df_filtrato.groupby('Giocatore').agg({
         'Punteggio': 'sum',
         'vittorie': 'sum'
     }).reset_index()
     
-    somma = somma.sort_values('Punteggio', ascending=False)
-    return data, somma
+    df_somma = df_somma.sort_values('Punteggio', ascending=False)
 
-try:
-    df_originale, df_somma = fetch_data()
-    data_max = df_originale['Data'].max()
-
-    # --- INTERFACCIA ---
-    st.title("🏆 Campionato Ludico GazLan26")
-    st.subheader(f"Classifica aggiornata al {data_max}")
-
-    # --- TABELLA (Sostituisce Treeview) ---
-    # Streamlit formatta automaticamente la tabella in modo professionale
+    # --- TABELLA ---
     st.dataframe(df_somma, use_container_width=True, hide_index=True)
 
-    # --- GRAFICI (Sostituisce FigureCanvasTkAgg) ---
+    # --- GRAFICI ---
     st.write("### Statistiche")
     
-    # Creiamo due colonne per i grafici (come avevi fatto con i frame)
+    # Creiamo due colonne per i grafici
     col1, col2 = st.columns(2)
 
     colors = ['#4CAF50', '#FF9800', '#2196F3', '#E91E63']
 
     with col1:
-        # Grafico a barre (Orizzontale come il tuo)
+        # Grafico a barre (Orizzontale)
         fig, ax = plt.subplots(figsize=(5, 5))
         ax.barh(df_somma['Giocatore'], df_somma['Punteggio'], color=colors)
         for i, v in enumerate(df_somma['Punteggio']):
@@ -63,11 +114,31 @@ try:
     with col2:
         # Grafico a torta
         fig2, ax2 = plt.subplots(figsize=(5, 5))
-        ax2.pie(df_somma['vittorie'], labels=df_somma['Giocatore'], 
-                autopct='%1.0f%%', colors=colors, textprops={'fontsize': 10})
-        ax2.set_title('Distribuzione Vittorie', fontsize=14)
+        
+        # Filtriamo df_somma per tenere solo chi ha effettivamente vinto almeno una volta
+        df_torta = df_somma[df_somma['vittorie'] > 0]
+        
+        # Evitiamo il crash se nessun giocatore ha vittorie assegnate
+        if not df_torta.empty:
+            # Recuperiamo i colori associati ai soli giocatori rimasti
+            # Usiamo gli stessi indici posizionali per mantenere la coerenza dei colori originali
+            colori_filtrati = [colors[i % len(colors)] for i in df_torta.index]
+            
+            ax2.pie(
+                df_torta['vittorie'], 
+                labels=df_torta['Giocatore'], 
+                autopct=lambda pct: f"{int(round(pct * df_torta['vittorie'].sum() / 100.0))}", 
+                colors=colori_filtrati, 
+                textprops={'fontsize': 10}
+            )
+        else:
+            ax2.text(0.5, 0.5, "Nessuna vittoria\nregistrata", 
+                     ha='center', va='center', fontsize=12, color='gray')
+            ax2.axis('off')
+            
+        ax2.set_title('Vittorie', fontsize=14)
         st.pyplot(fig2)
-
+        
     # Bottone extra per aggiornare
     if st.button("🔄 Aggiorna Dati"):
         st.cache_data.clear()
@@ -75,4 +146,4 @@ try:
 
 except Exception as e:
     st.error(f"Errore nel caricamento: {e}")
-    st.info("Assicurati che il foglio Google sia condiviso con 'Chiunque abbia il link'.") 
+    st.info("Assicurati che il foglio Google sia condiviso con 'Chiunque abbia il link'.")
