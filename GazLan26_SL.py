@@ -27,9 +27,16 @@ try:
     df_org = fetch_raw_data()
     data_max = df_org['Data'].max()
 
-    # --- INTERFACCIA ---
-    st.title("🏆 Campionato Ludico GazLan26")
-    st.subheader(f"Classifica aggiornata al {data_max.strftime('%d/%m/%Y')}")
+  # --- INTERFACCIA ---
+    # Usiamo HTML personalizzato per ridurre la dimensione del titolo e del sottotitolo
+    st.markdown(
+        '<h1 style="font-size: 30px; font-weight: 700; margin-bottom: 5px; padding-bottom: 0px;">🏆 Campionato Ludico GazLan26</h1>', 
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        f'<p style="font-size: 18px; color: #555; margin-top: 0px; margin-bottom: 25px;">Classifica aggiornata al {data_max.strftime("%d/%m/%Y")}</p>', 
+        unsafe_allow_html=True
+    )
 
     # --- DATI RIEPILOGO GENERALE (Sempre riferiti a TUTTI i giochi) ---
     giornate_gioco = df_org['Data'].nunique()
@@ -91,21 +98,28 @@ try:
     # --- GRAFICI ---
     st.write("### Statistiche")
     
-    # Creiamo due colonne per i grafici
     col1, col2 = st.columns(2)
-
     colors = ['#4CAF50', '#FF9800', '#2196F3', '#E91E63']
 
     with col1:
         # Grafico a barre (Orizzontale)
         fig, ax = plt.subplots(figsize=(5, 5))
         ax.barh(df_somma['Giocatore'], df_somma['Punteggio'], color=colors)
+        
+        # Etichette del punteggio dentro le barre con font più grande (da 12 a 14)
         for i, v in enumerate(df_somma['Punteggio']):
             ax.text(v * 0.95, i, str(v), color='white', fontweight='bold', 
-                    ha='right', va='center', fontsize=12)
+                    ha='right', va='center', fontsize=14)
+                    
         ax.invert_yaxis()
-        ax.set_title('Punteggio Totale', fontsize=14)
+        
+        # Titolo del grafico più grande (da 14 a 18) e in grassetto
+        ax.set_title('Punteggio Totale', fontsize=18, fontweight='bold', pad=15)
+        
+        # Etichette dei giocatori sulla sinistra più grandi (labelsize=14)
+        ax.tick_params(axis='y', labelsize=14)
         ax.set_xticks([])
+        
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.spines['bottom'].set_visible(False)
@@ -114,31 +128,28 @@ try:
     with col2:
         # Grafico a torta
         fig2, ax2 = plt.subplots(figsize=(5, 5))
-        
-        # Filtriamo df_somma per tenere solo chi ha effettivamente vinto almeno una volta
         df_torta = df_somma[df_somma['vittorie'] > 0]
         
-        # Evitiamo il crash se nessun giocatore ha vittorie assegnate
         if not df_torta.empty:
-            # Recuperiamo i colori associati ai soli giocatori rimasti
-            # Usiamo gli stessi indici posizionali per mantenere la coerenza dei colori originali
             colori_filtrati = [colors[i % len(colors)] for i in df_torta.index]
             
+            # Disegna la torta con etichette dei giocatori e valori reali più grandi (fontsize: 14)
             ax2.pie(
                 df_torta['vittorie'], 
                 labels=df_torta['Giocatore'], 
                 autopct=lambda pct: f"{int(round(pct * df_torta['vittorie'].sum() / 100.0))}", 
                 colors=colori_filtrati, 
-                textprops={'fontsize': 10}
+                textprops={'fontsize': 14}
             )
         else:
             ax2.text(0.5, 0.5, "Nessuna vittoria\nregistrata", 
-                     ha='center', va='center', fontsize=12, color='gray')
+                     ha='center', va='center', fontsize=16, color='gray')
             ax2.axis('off')
             
-        ax2.set_title('Vittorie', fontsize=14)
+        # Titolo della torta più grande (da 14 a 18) e in grassetto
+        ax2.set_title('Vittorie', fontsize=18, fontweight='bold', pad=15)
         st.pyplot(fig2)
-        
+
     # Bottone extra per aggiornare
     if st.button("🔄 Aggiorna Dati"):
         st.cache_data.clear()
