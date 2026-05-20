@@ -109,8 +109,8 @@ try:
                     
         ax.invert_yaxis()
         
-        # Titolo del grafico più grande (18) e in grassetto
-        ax.set_title('Punteggio Totale', fontsize=18, fontweight='bold', pad=15)
+        # Titolo del grafico con indicazione dinamica del gioco
+        ax.set_title(f'Punteggio Totale\n({gioco_selezionato})', fontsize=18, fontweight='bold', pad=15)
         
         # Etichette dei giocatori sulla sinistra più grandi (labelsize=14)
         ax.tick_params(axis='y', labelsize=14)
@@ -146,8 +146,8 @@ try:
                      ha='center', va='center', fontsize=16, color='gray')
             ax2.axis('off')
             
-        # Titolo della torta più grande (18) e in grassetto
-        ax2.set_title('Vittorie', fontsize=18, fontweight='bold', pad=15)
+        # Titolo della torta dinamico
+        ax2.set_title(f'Vittorie\n({gioco_selezionato})', fontsize=18, fontweight='bold', pad=15)
         
         # Renderizziamo il grafico con lo sfondo solido predefinito
         st.pyplot(fig2)
